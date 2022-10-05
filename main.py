@@ -1,6 +1,11 @@
 import tkinter as tk
 from tkinter import *
+from  tkinter import ttk
+from tkinter import messagebox
+from datetime import datetime as time
 import os
+
+days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 def main():
     global main_screen
@@ -172,16 +177,211 @@ def dashboardtomain():
     main()
 
 def Attendence():
-    global attendence
+    
+    now = time.now()
+    day = now.weekday()
+    hour = now.hour
+    minute = now.minute
+
+    course = "#" # get this from database
+
+    messagebox.showinfo("Attendence Marked", "Your attendence for {} course is marked at time {}:{} {}".format(course, hour, minute, days[day]))
 
 def student_courses():
     global courses
+    courses = Toplevel(dashboard)
+    courses.title("Your courses")
+    courses.geometry("500x400")
+
+    c = Frame(courses)
+    c.pack()
+
+    Label(c, text="Courses", bg="#b1abf1", fg="white",
+          width="300", height="2", font=("Calibri", 13)).pack(padx=20, pady=23 )
+
+    #scrollbar
+    cscroll = Scrollbar(c)
+    cscroll.pack(side=RIGHT, fill=Y)
+
+    C = ttk.Treeview(c,yscrollcommand=cscroll.set)
+    C.pack()
+
+    cscroll.config(command=C.yview)
+
+    #define our column
+    C['columns'] = ('player_id', 'player_name', 'player_Rank', 'player_states', 'player_city') # get column names from database
+
+    # format our column
+    C.column("#0", width=0,  stretch=NO)
+    C.column("player_id",anchor=CENTER, width=80)
+    C.column("player_name",anchor=CENTER,width=80)
+    C.column("player_Rank",anchor=CENTER,width=80)
+    C.column("player_states",anchor=CENTER,width=80)
+    C.column("player_city",anchor=CENTER,width=80)
+
+    #Create Headings 
+    C.heading("#0",text="",anchor=CENTER)
+    C.heading("player_id",text="Id",anchor=CENTER)
+    C.heading("player_name",text="Name",anchor=CENTER)
+    C.heading("player_Rank",text="Rank",anchor=CENTER)
+    C.heading("player_states",text="States",anchor=CENTER)
+    C.heading("player_city",text="States",anchor=CENTER)
+
+    #add data 
+    C.insert(parent='',index='end',iid=0,text='',
+    values=('1','Ninja','101','Oklahoma', 'Moore'))
+    C.insert(parent='',index='end',iid=1,text='',
+    values=('2','Ranger','102','Wisconsin', 'Green Bay'))
+    C.insert(parent='',index='end',iid=2,text='',
+    values=('3','Deamon','103', 'California', 'Placentia'))
+    C.insert(parent='',index='end',iid=3,text='',
+    values=('4','Dragon','104','New York' , 'White Plains'))
+    C.insert(parent='',index='end',iid=4,text='',
+    values=('5','CrissCross','105','California', 'San Diego'))
+    C.insert(parent='',index='end',iid=5,text='',
+    values=('6','ZaqueriBlack','106','Wisconsin' , 'TONY'))
+    C.insert(parent='',index='end',iid=6,text='',
+    values=('7','RayRizzo','107','Colorado' , 'Denver'))
+    C.insert(parent='',index='end',iid=7,text='',
+    values=('8','Byun','108','Pennsylvania' , 'ORVISTON'))
+    C.insert(parent='',index='end',iid=8,text='',
+    values=('9','Trink','109','Ohio' , 'Cleveland'))
+    C.insert(parent='',index='end',iid=9,text='',
+    values=('10','Twitch','110','Georgia' , 'Duluth'))
+    C.insert(parent='',index='end',iid=10,text='',
+    values=('11','Animus','111', 'Connecticut' , 'Hartford'))
+    C.pack()
+    
 
 def faculty_courses():
     global courses
+    courses = Toplevel(dashboard)
+    courses.title("Your courses")
+    courses.geometry("500x400")
+
+    c = Frame(courses)
+    c.pack()
+
+    Label(c, text="Courses", bg="#b1abf1", fg="white",
+          width="300", height="2", font=("Calibri", 13)).pack(padx=20, pady=23 )
+
+    #scrollbar
+    cscroll = Scrollbar(c)
+    cscroll.pack(side=RIGHT, fill=Y)
+
+    C = ttk.Treeview(c,yscrollcommand=cscroll.set)
+    C.pack()
+
+    cscroll.config(command=C.yview)
+
+    #define our column
+    C['columns'] = ('player_id', 'player_name', 'player_Rank', 'player_states', 'player_city') # get column names from database
+
+    # format our column
+    C.column("#0", width=0,  stretch=NO)
+    C.column("player_id",anchor=CENTER, width=80)
+    C.column("player_name",anchor=CENTER,width=80)
+    C.column("player_Rank",anchor=CENTER,width=80)
+    C.column("player_states",anchor=CENTER,width=80)
+    C.column("player_city",anchor=CENTER,width=80)
+
+    #Create Headings 
+    C.heading("#0",text="",anchor=CENTER)
+    C.heading("player_id",text="Id",anchor=CENTER)
+    C.heading("player_name",text="Name",anchor=CENTER)
+    C.heading("player_Rank",text="Rank",anchor=CENTER)
+    C.heading("player_states",text="States",anchor=CENTER)
+    C.heading("player_city",text="States",anchor=CENTER)
+
+    #add data 
+    C.insert(parent='',index='end',iid=0,text='',
+    values=('1','Ninja','101','Oklahoma', 'Moore'))
+    C.insert(parent='',index='end',iid=1,text='',
+    values=('2','Ranger','102','Wisconsin', 'Green Bay'))
+    C.insert(parent='',index='end',iid=2,text='',
+    values=('3','Deamon','103', 'California', 'Placentia'))
+    C.insert(parent='',index='end',iid=3,text='',
+    values=('4','Dragon','104','New York' , 'White Plains'))
+    C.insert(parent='',index='end',iid=4,text='',
+    values=('5','CrissCross','105','California', 'San Diego'))
+    C.insert(parent='',index='end',iid=5,text='',
+    values=('6','ZaqueriBlack','106','Wisconsin' , 'TONY'))
+    C.insert(parent='',index='end',iid=6,text='',
+    values=('7','RayRizzo','107','Colorado' , 'Denver'))
+    C.insert(parent='',index='end',iid=7,text='',
+    values=('8','Byun','108','Pennsylvania' , 'ORVISTON'))
+    C.insert(parent='',index='end',iid=8,text='',
+    values=('9','Trink','109','Ohio' , 'Cleveland'))
+    C.insert(parent='',index='end',iid=9,text='',
+    values=('10','Twitch','110','Georgia' , 'Duluth'))
+    C.insert(parent='',index='end',iid=10,text='',
+    values=('11','Animus','111', 'Connecticut' , 'Hartford'))
+    C.pack()
 
 def student_attendence():
     global attendence_dashboard
+    attendence_dashboard = Toplevel(dashboard)
+    attendence_dashboard.title("'student's name' Attendence dashboared")
+    attendence_dashboard.geometry("500x400")
+
+    c = Frame(attendence_dashboard)
+    c.pack()
+
+    Label(c, text="Courses", bg="#b1abf1", fg="white",
+          width="300", height="2", font=("Calibri", 13)).pack(padx=20, pady=23 )
+
+    #scrollbar
+    cscroll = Scrollbar(c)
+    cscroll.pack(side=RIGHT, fill=Y)
+
+    C = ttk.Treeview(c,yscrollcommand=cscroll.set)
+    C.pack()
+
+    cscroll.config(command=C.yview)
+
+    #define our column
+    C['columns'] = ('player_id', 'player_name', 'player_Rank', 'player_states', 'player_city') # get column names from database
+
+    # format our column
+    C.column("#0", width=0,  stretch=NO)
+    C.column("player_id",anchor=CENTER, width=80)
+    C.column("player_name",anchor=CENTER,width=80)
+    C.column("player_Rank",anchor=CENTER,width=80)
+    C.column("player_states",anchor=CENTER,width=80)
+    C.column("player_city",anchor=CENTER,width=80)
+
+    #Create Headings 
+    C.heading("#0",text="",anchor=CENTER)
+    C.heading("player_id",text="Id",anchor=CENTER)
+    C.heading("player_name",text="Name",anchor=CENTER)
+    C.heading("player_Rank",text="Rank",anchor=CENTER)
+    C.heading("player_states",text="States",anchor=CENTER)
+    C.heading("player_city",text="States",anchor=CENTER)
+
+    #add data 
+    C.insert(parent='',index='end',iid=0,text='',
+    values=('1','Ninja','101','Oklahoma', 'Moore'))
+    C.insert(parent='',index='end',iid=1,text='',
+    values=('2','Ranger','102','Wisconsin', 'Green Bay'))
+    C.insert(parent='',index='end',iid=2,text='',
+    values=('3','Deamon','103', 'California', 'Placentia'))
+    C.insert(parent='',index='end',iid=3,text='',
+    values=('4','Dragon','104','New York' , 'White Plains'))
+    C.insert(parent='',index='end',iid=4,text='',
+    values=('5','CrissCross','105','California', 'San Diego'))
+    C.insert(parent='',index='end',iid=5,text='',
+    values=('6','ZaqueriBlack','106','Wisconsin' , 'TONY'))
+    C.insert(parent='',index='end',iid=6,text='',
+    values=('7','RayRizzo','107','Colorado' , 'Denver'))
+    C.insert(parent='',index='end',iid=7,text='',
+    values=('8','Byun','108','Pennsylvania' , 'ORVISTON'))
+    C.insert(parent='',index='end',iid=8,text='',
+    values=('9','Trink','109','Ohio' , 'Cleveland'))
+    C.insert(parent='',index='end',iid=9,text='',
+    values=('10','Twitch','110','Georgia' , 'Duluth'))
+    C.insert(parent='',index='end',iid=10,text='',
+    values=('11','Animus','111', 'Connecticut' , 'Hartford'))
+    C.pack()
 
 def login_sucess():
     global login_success_screen
