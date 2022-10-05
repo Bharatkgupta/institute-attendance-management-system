@@ -152,13 +152,16 @@ def delete_user_not_found_screen():
 def main_account_screen():
     global main_screen
     main_screen = Tk()
-    main_screen.geometry("300x250")
-    main_screen.title("Account Login")
-    Label(text="Select Your Choice", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
-    Label(text="").pack()
-    Button(text="Login", height="2", width="30", command = login).pack()
-    Label(text="").pack()
-    Button(text="Register", height="2", width="30", command=register).pack()
+    main_screen.geometry("400x400")
+    main_screen.title("Institute Attendence")
+    Label(text="Select Yourself", bg="#b1abf1", fg="white", width="300", height="2", font=("Calibri", 13)).pack(padx=20, pady=23 )
+    #Label(text="Select Yourself", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
+    Button(text="Student", height="2", width="15", fg="#c0ecc0",command=login).pack(padx=1, pady=20)
+    Button(text="Faculty", height="2", width="15",fg="#D8BFD8", command=register).pack(padx=1, pady=5)
+    #Label(text="").pack()
+    #Button(text="Login", height="2", width="30", command = login).pack()
+    #Label(text="").pack()
+    #Button(text="Register", height="2", width="30", command=register).pack()
  
     main_screen.mainloop()
  
