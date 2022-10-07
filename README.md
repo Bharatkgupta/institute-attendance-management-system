@@ -1,9 +1,25 @@
 # institute-attendence-management-system
 
-Requiremnet : python, sqlalchemy
+## This is my Database Management System project.
 
-Instructions :
+Requiremnet : python, mysql server and mysql-connector-python
+
+## Instructions:
+
+Install requiremnts:
+
 ```
-python creatdb.py
-python Run tk.py
+pip install -r requiremnts.txt
+```
+
+Create database:
+
+```
+py dbcreate.py
+```
+
+Run application:
+
+```
+py main.py
 ```
