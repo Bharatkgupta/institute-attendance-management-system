@@ -1,6 +1,6 @@
 # institute-attendance-management-system
 
-## This is my Database Management System project.
+### This is my Database Management System project.
 
 Requiremnet : python, mysql server and mysql-connector-python
 
