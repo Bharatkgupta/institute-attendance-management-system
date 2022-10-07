@@ -2,11 +2,11 @@
 
 ### This is my Database Management System project.
 
-Requiremnet : python, mysql server and mysql-connector-python
+Requirements : python, mysql server and mysql-connector-python
 
 ## Instructions:
 
-Install requiremnts:
+Install requirements:
 
 ```
 pip install -r requirements.txt
