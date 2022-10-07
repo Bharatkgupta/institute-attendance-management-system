@@ -1,4 +1,4 @@
-# institute-attendence-management-system
+# institute-attendance-management-system
 
 ## This is my Database Management System project.
 
@@ -9,7 +9,7 @@ Requiremnet : python, mysql server and mysql-connector-python
 Install requiremnts:
 
 ```
-pip install -r requiremnts.txt
+pip install -r requirements.txt
 ```
 
 Create database:
