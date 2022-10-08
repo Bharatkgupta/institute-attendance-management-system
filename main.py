@@ -2,6 +2,7 @@ from tkinter import *
 from  tkinter import ttk
 from tkinter import messagebox
 from datetime import datetime as time
+from datetime import date
 import mysql.connector as mysql
 import dbconnect as db
 
@@ -61,18 +62,18 @@ def facultylogin():
           width="300", height="2",font=("Calibri", 13)).pack(padx=20, pady=23 )
     Label(login_screen, text="").pack()
 
-    global facid_verify
+    global profid_verify
     global password_verify
 
-    facid_verify = StringVar()
+    profid_verify = StringVar()
     password_verify = StringVar()
 
-    global facid_login_entry
+    global profid_login_entry
     global password_login_entry
 
     Label(login_screen, text="Professor ID",fg="black", bg="#c0ecc0").pack()
-    facid_login_entry = Entry(login_screen, textvariable=facid_verify)
-    facid_login_entry.pack(pady=5)
+    profid_login_entry = Entry(login_screen, textvariable=profid_verify)
+    profid_login_entry.pack(pady=5)
 
     Label(login_screen, text="").pack()
     Label(login_screen, text="Password",fg="black", bg="#c0ecc0").pack(pady=5)
@@ -115,27 +116,27 @@ def student_login_verify():
             messagebox.showinfo('Error', f"due to :{str(es)}")
 
 def faculty_login_verify():
-    facid = facid_verify.get()
+    profid = profid_verify.get()
     password = password_verify.get()
-    facid_login_entry.delete(0, END)
+    profid_login_entry.delete(0, END)
     password_login_entry.delete(0, END)
 
-    if(facid == "ADMIN" and password == "terabaap"):
+    if(profid == "ADMIN" and password == "terabaap"):
         admin_dasboard()
 
-    if facid == "" or password == "":
+    if profid == "" or password == "":
         messagebox.showerror("Information",'Error Enter username & password')
     else:
         try:
             conn = mysql.connect(**db.dbConfig)
             cursor = conn.cursor(buffered=True)
-            cursor.execute("select prof_name from professors where prof_id=%s and password=%s", (facid, password))
+            cursor.execute("select name from professors where prof_id=%s and password=%s", (profid, password))
             rowcount = cursor.rowcount
             if rowcount == 1:
                 messagebox.showinfo('Information', "Login Successfully")
                 for name in cursor:  
                     Name = name[0]
-                faculty_dashboard(facid,Name)
+                faculty_dashboard(profid,Name)
             else:
                 messagebox.showinfo('Information', "Login failed,Invalid Username or Password.Try again!!!")
             cursor.close()
@@ -197,7 +198,7 @@ def allcourses():
     conn = mysql.connect(**db.dbConfig)
     cursor = conn.cursor(buffered=True)
 
-    cursor.execute("select * from courses")
+    cursor.execute("select course_code, course_name from courses")
 
     for coursecode, coursename in cursor:
         print(coursecode, coursename)
@@ -220,7 +221,7 @@ def student_dashboard(rollno,name):
     Button(text="Logout", height="2", width="15",fg="#D8BFD8", command=dashboardtomain).pack(padx=1, pady=5)
     dashboard.mainloop()
 
-def faculty_dashboard(facid, name):
+def faculty_dashboard(profid, name):
     login_screen.destroy()
     global dashboard
     dashboard = Tk()
@@ -228,8 +229,8 @@ def faculty_dashboard(facid, name):
     dashboard.geometry("300x400")
     Label(text="Dashboard", bg="#b1abf1", fg="white",
           width="300", height="2", font=("Calibri", 13)).pack(padx=20, pady=23)
-    Button(text="My Courses", height="2", width="15",fg="#D8BFD8", command=lambda: faculty_courses(facid)).pack(padx=1, pady=5)
-    Button(text="Student's Attendence", height="2", width="15",fg="#D8BFD8", command=lambda: student_attendence(facid)).pack(padx=1, pady=5)
+    Button(text="My Courses", height="2", width="15",fg="#D8BFD8", command=lambda: faculty_courses(profid)).pack(padx=1, pady=5)
+    Button(text="Student's Attendence", height="2", width="15",fg="#D8BFD8", command=lambda: student_attendence(profid)).pack(padx=1, pady=5)
     Button(text="Logout", height="2", width="15",fg="#D8BFD8", command=dashboardtomain).pack(padx=1, pady=5)
     dashboard.mainloop()
 
@@ -262,7 +263,7 @@ def Attendence(rollno):
     for cc in cursor:
         course_name = cc[0]
 
-    cursor.execute("insert into attendance (rollno_id, course_code, day) values (%s, %s, %s)", (rollno, course, day))
+    cursor.execute("insert into attendance (roll_no, course_code, date) values (%s, %s, %s)", (rollno, course, date.today()))
     cursor.close()
     conn.close()
 
@@ -317,7 +318,7 @@ def student_courses(rollno):
     conn.close()
     
 
-def faculty_courses(facid):
+def faculty_courses(profid):
     global courses
     courses = Toplevel(dashboard)
     courses.title("Your courses")
@@ -355,7 +356,7 @@ def faculty_courses(facid):
     conn = mysql.connect(**db.dbConfig)
     cursor = conn.cursor(buffered=True)
 
-    cursor.execute("select course_code, course_name from courses where prof_id=%s", (facid,))
+    cursor.execute("select course_code, course_name from courses where prof_id=%s", (profid,))
 
     for coursecode, coursename in cursor:
         print(coursecode, coursename)
@@ -365,7 +366,7 @@ def faculty_courses(facid):
     cursor.close()
     conn.close()
 
-def student_attendence(facid):
+def student_attendence(profid):
     global attendence_dashboard
     attendence_dashboard = Toplevel(dashboard)
     attendence_dashboard.title("Attendence dashboared")
@@ -407,9 +408,9 @@ def student_attendence(facid):
     rollno_login_entry = Entry(c, textvariable=rollno_verify)
     rollno_login_entry.pack(pady=5)
 
-    Button(c, text="Go",width=5,fg="black" ,height=1, command=lambda: tableattendance(C,facid)).pack(padx=2)
+    Button(c, text="Go",width=5,fg="black" ,height=1, command=lambda: tableattendance(C,profid)).pack(padx=2)
 
-def tableattendance(C,facid):
+def tableattendance(C,profid):
     rollno = rollno_verify.get()
 
     for row in C.get_children():
@@ -418,7 +419,7 @@ def tableattendance(C,facid):
     conn = mysql.connect(**db.dbConfig)
     cursor = conn.cursor(buffered=True)
 
-    cursor.execute("select course_code, count(attend_id) as count from attendance where rollno_id=%s and course_code in (select course_code from courses where prof_id=%s) group by course_code", (rollno,facid))
+    cursor.execute("select course_code, count(attend_id) as count from attendance where roll_no=%s and course_code in (select course_code from courses where prof_id=%s) group by course_code", (rollno,profid))
 
     for coursecode, count in cursor:
         C.insert(parent='',index='end',text='', values=(coursecode, count))

@@ -17,7 +17,7 @@ TABLES['students'] = (
 TABLES['professors'] = (
     "CREATE TABLE `professors` ("
     "  `prof_id` int NOT NULL AUTO_INCREMENT,"
-    "  `prof_name` varchar(30) NOT NULL,"
+    "  `name` varchar(30) NOT NULL,"
     "  `password` varchar(20) NOT NULL,"
     "  PRIMARY KEY (`prof_id`)"
     ") ENGINE=InnoDB")
@@ -28,6 +28,9 @@ TABLES['courses'] = (
     "  `course_name` varchar(30) NOT NULL,"
     "  `prof_id` int NOT NULL,"
     "  PRIMARY KEY (`course_code`)"
+    "  KEY `prof_id` (`prof_id`),"
+    "  CONSTRAINT `prof_course` FOREIGN KEY (`prof_id`) "
+    "     REFERENCES `professors` (`prof_id`)"
     ") ENGINE=InnoDB")
 
 TABLES['courses_sch'] = (
@@ -36,18 +39,25 @@ TABLES['courses_sch'] = (
     "  `day` int NOT NULL,"
     "  `start_time` time NOT NULL,"
     "  `end_time` time NOT NULL,"
-    "  PRIMARY KEY (`course_code`,`day`), KEY `course_code` (`course_code`),"
-    "  CONSTRAINT `course_day` FOREIGN KEY (`course_code`) "
+    "  PRIMARY KEY (`course_code`,`day`),"
+    "  KEY `course_code` (`course_code`),"
+    "  CONSTRAINT `course_sch` FOREIGN KEY (`course_code`) "
     "     REFERENCES `courses` (`course_code`) ON DELETE CASCADE"
     ") ENGINE=InnoDB")
 
 TABLES['attendance'] = (
     "  CREATE TABLE `attendance` ("
     "  `attend_id` int NOT NULL AUTO_INCREMENT,"
-    "  `rollno_id` int NOT NULL,"
+    "  `roll_no` int NOT NULL,"
     "  `course_code` int NOT NULL,"
-    "  `day` int NOT NULL,"
+    "  `date` date NOT NULL,"
     "  PRIMARY KEY (`attend_id`)"
+    "  KEY `roll_no` (`roll_no`),"
+    "  KEY `course_code` (`course_code`),"
+    "  CONSTRAINT `roll_no_attend` FOREIGN KEY (`roll_no`)"
+    "     REFERENCES `students` (`roll_no`),"
+    "  CONSTRAINT `course_attend` FOREIGN KEY (`course_code`)"
+    "     REFERENCES `courses` (`course_code`)"
     ") ENGINE=InnoDB")
 
 TABLES['courses_taken'] = (
@@ -60,7 +70,7 @@ TABLES['courses_taken'] = (
     "  CONSTRAINT `roll_no_course1` FOREIGN KEY (`roll_no`)"
     "     REFERENCES `students` (`roll_no`) ON DELETE CASCADE,"
     "  CONSTRAINT `roll_no_course2` FOREIGN KEY (`course_code`)"
-    "     REFERENCES `courses` (`course_code`) ON DELETE CASCADE"
+    "     REFERENCES `courses` (`course_code`)"
     ") ENGINE=InnoDB")
 
 cnx = mysql.connector.connect(**db.dbConfig)
